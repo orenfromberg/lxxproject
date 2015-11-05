@@ -7,13 +7,17 @@ from html.parser import HTMLParser
 import urllib.request
 import re
 
+lxxuri = "http://ccat.sas.upenn.edu/gopher/text/religion/biblical/lxxmorph/"
+
 class MyHTMLParser(HTMLParser):
     def handle_starttag(self, tag, attrs):
         if (tag == "a"):
             if (re.match("[0-9][0-9]", attrs[0][1])):
-                uri = "http://ccat.sas.upenn.edu/gopher/text/religion/biblical/lxxmorph/" + attrs[0][1]
+                uri = lxxuri + attrs[0][1]
                 filename = "files/" + attrs[0][1]
                 urllib.request.urlretrieve(uri, filename)
+
+urllib.request.urlretrieve(lxxuri, "TOC.html")
 
 with open ("TOC.html", "r") as myfile:
 	data = myfile.read()
