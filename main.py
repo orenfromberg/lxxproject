@@ -1,6 +1,7 @@
 # this script will download all the books of the lxxmorph
 # from http://ccat.sas.upenn.edu/gopher/text/religion/biblical/lxxmorph/
-# as specified in TOC. html
+# as specified in TOC.html
+# uses Python 3.4.3
 
 from html.parser import HTMLParser
 import urllib.request
