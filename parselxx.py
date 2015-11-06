@@ -23,9 +23,8 @@ verse_nr = ""
 word_nr = 0
 count = 0
 word = ""
-prefix = ""
 
-outfile = open('outfile.txt', 'wb')
+# outfile = open('outfile.txt', 'wb')
 
 dbconn = sqlite3.connect("database")
 
@@ -35,20 +34,18 @@ for line in lines:
 		book_name = a[0]
 		chapter_nr = a[1]
 		verse_nr = a[2]
-		prefix = book_name + ", " + chapter_nr + ", " + verse_nr + ", "
 		word_nr = 0
 	elif (re.match(".+", line)):
 		word_nr = word_nr + 1
 		count = count + 1
 		a = re.split("\s+", line)
-		word = a[0]
+		word = a[0] # word is first in array
 		encoded_word = str.encode(betacode.transliterate(word))
 		unicode_word = encoded_word.decode('utf-8')
 		sqlcode = "INSERT INTO content VALUES (\'" + str(count) + "\', \'" + book_name + "\', \'" + str(chapter_nr) + "\', \'" + str(verse_nr) + "\', \'" +  str(word_nr) + "\', \'" + unicode_word + "\')"
-		#print(prefix + str(word_nr) +": \"" + word + "  \"" + str(unicode_word) + "\"")
 		#outfile.write(unicode_word.encode('utf-8'))
 		dbconn.execute(sqlcode)
 		dbconn.commit()
 
 dbconn.close()
-outfile.close()
+# outfile.close()
