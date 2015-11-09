@@ -55,5 +55,5 @@ def parse_file(filename):
 
 	dbconn.close()
 
-parse_file("59.BelOG.mlxx")
-#parse_lxx();
+#parse_file("59.BelOG.mlxx")
+parse_lxx();
