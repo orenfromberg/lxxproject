@@ -8,11 +8,34 @@ mypath = "files"
 count = 0
 
 def parse_lxx():
+	dbconn = sqlite3.connect("lxx.fast.db")
+	dbconn.execute('''drop table if exists content''')
+	dbconn.commit()
+	dbconn.execute('''CREATE TABLE `content` (
+			`id`	INTEGER PRIMARY KEY AUTOINCREMENT,
+			`book_name`	TEXT NOT NULL,
+			`chapter_nr`	TEXT NOT NULL,
+			`verse_nr`	TEXT NOT NULL,
+			`word_nr`	INTEGER NOT NULL,
+			`word`	TEXT NOT NULL,
+			`word_root`	TEXT NOT NULL
+		);''')
+	dbconn.close()
+
 	lxxfiles = [ f for f in listdir(mypath) if isfile(join(mypath,f)) ]
 
 	for lxxfile in lxxfiles:
 		print (lxxfile)
 		parse_file(lxxfile)
+
+def get_unicode_word(wordInBetacode):
+	encoded_word = str.encode(betacode.transliterate(wordInBetacode))
+	return encoded_word.decode('utf-8')
+
+def commit_values(db, valuesToInsert):
+	sqlcode = "INSERT INTO content VALUES " + ",".join(valuesToInsert)
+	db.execute(sqlcode)
+	db.commit()
 
 def parse_file(filename):
 	lines = [line.rstrip('\n') for line in open('files/' + filename)]
@@ -23,11 +46,11 @@ def parse_file(filename):
 	word_nr = 0
 	word = ""
 	global count
-	
-	# outfile = open('outfile.txt', 'wb')
 
-	dbconn = sqlite3.connect("lxx.db")
+	dbconn = sqlite3.connect("lxx.fast.db")
 
+	valuesToInsert = []
+	chunkCounter = 0
 	for line in lines:
 		if (re.match(".+ .+:.+", line)):
 			a = re.split("[\s|:]", line)
@@ -45,15 +68,19 @@ def parse_file(filename):
 			word_nr = word_nr + 1
 			count = count + 1
 			a = re.split("\s+", line)
-			word = a[0] # word is first in array
-			encoded_word = str.encode(betacode.transliterate(word))
-			unicode_word = encoded_word.decode('utf-8')
-			sqlcode = "INSERT INTO content VALUES (\'" + str(count) + "\', \'" + book_name + "\', \'" + str(chapter_nr) + "\', \'" + str(verse_nr) + "\', \'" +  str(word_nr) + "\', \'" + unicode_word + "\')"
-			#outfile.write(unicode_word.encode('utf-8'))
-			dbconn.execute(sqlcode)
-			dbconn.commit()
+			word = get_unicode_word(a[0])
+			root_word = get_unicode_word(a[-1])
+			valuesToInsert.append("(\'" + str(count) + "\', \'" + book_name + "\', \'" + str(chapter_nr) + "\', \'" + str(verse_nr) + "\', \'" +  str(word_nr) + "\', \'" + word + "\', \'" + root_word + "\')")
+			chunkCounter += 1
+
+		if (chunkCounter == 499):
+			commit_values(dbconn, valuesToInsert)
+			valuesToInsert = []
+			chunkCounter = 0
+
+	if (chunkCounter > 0):
+		commit_values(dbconn, valuesToInsert)
 
 	dbconn.close()
 
-#parse_file("59.BelOG.mlxx")
 parse_lxx();
