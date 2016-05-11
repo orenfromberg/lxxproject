@@ -8,7 +8,7 @@ mypath = "files"
 count = 0
 
 def parse_lxx():
-	dbconn = sqlite3.connect("lxx.fast.db")
+	dbconn = sqlite3.connect("lxx.db")
 	dbconn.execute('''drop table if exists content''')
 	dbconn.commit()
 	dbconn.execute('''CREATE TABLE `content` (
@@ -47,7 +47,7 @@ def parse_file(filename):
 	word = ""
 	global count
 
-	dbconn = sqlite3.connect("lxx.fast.db")
+	dbconn = sqlite3.connect("lxx.db")
 
 	valuesToInsert = []
 	chunkCounter = 0
