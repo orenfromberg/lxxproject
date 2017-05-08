@@ -1,4 +1,10 @@
-# lxxproject
+# LXX Project
+
+To generate `lxx.db`, simply run:
+
+    python3 main.py
+
+---
 
 This python script transforms plain text lxx files retreived from <http://ccat.sas.upenn.edu> into a sqlite3 database. See [here](http://ccat.sas.upenn.edu/gopher/text/religion/biblical/lxxmorph/) for the files.
 
@@ -16,7 +22,3 @@ id|book name|ch|v|w|word|root|morphology
 183029|Exod|1|1|8|εἰσπεπορευμένων|πορεύομαι εἰς|VX XPPGPM
 183030|Exod|1|1|9|εἰς|εἰς|P
 183031|Exod|1|1|10|Αἴγυπτον|Αἴγυπτος|N2 ASF
-
-To generate `lxx.db`, simply run:
-
-    python3 main.py
