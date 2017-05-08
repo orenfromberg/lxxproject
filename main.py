@@ -1,11 +1,14 @@
-from os import listdir
-from os.path import isfile, join
+from os import listdir, mkdir
+from os.path import isfile, join, exists
 import betacode as betacode
 import sqlite3
 import re
 
 mypath = "files"
 count = 0
+
+if not exists(mypath):
+	mkdir(mypath)
 
 # Check if we already have the lxx files downloaded
 lxx_file_count = len(listdir(mypath))
