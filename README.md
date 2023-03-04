@@ -22,3 +22,22 @@ id|book name|ch|v|w|word|root|morphology
 183029|Exod|1|1|8|εἰσπεπορευμένων|πορεύομαι εἰς|VX XPPGPM
 183030|Exod|1|1|9|εἰς|εἰς|P
 183031|Exod|1|1|10|Αἴγυπτον|Αἴγυπτος|N2 ASF
+
+## Sample Queries
+
+1. get all the words in a verse
+    ```sql
+    select word from content where book_name="Gen" and chapter_nr=1 and verse_nr=1 order by word_nr asc;
+    ```
+1. get all book names
+    ```sql
+    select distinct book_name from content;
+    ```
+1. get number of chapters in genesis
+    ```sql
+    select max(chapter_nr) from content where book_name="Gen";
+    ```
+1. get number of verses in the first chapter of genesis
+    ```sql
+    select max(verse_nr) from content where book_name="Gen" and chapter_nr=1;
+    ```
