@@ -34,8 +34,8 @@ def parse_lxx():
 	dbconn.execute('''CREATE TABLE `content` (
 			`id`			INTEGER PRIMARY KEY AUTOINCREMENT,
 			`book_name`		TEXT NOT NULL,
-			`chapter_nr`	TEXT NOT NULL,
-			`verse_nr`		TEXT NOT NULL,
+			`chapter_nr`	INTEGER NOT NULL,
+			`verse_nr`		INTEGER NOT NULL,
 			`word_nr`		INTEGER NOT NULL,
 			`word`			TEXT NOT NULL,
 			`word_root`		TEXT NOT NULL,
