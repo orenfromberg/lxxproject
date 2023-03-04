@@ -33,6 +33,7 @@ def parse_lxx():
 	dbconn.commit()
 	dbconn.execute('''CREATE TABLE `content` (
 			`id`			INTEGER PRIMARY KEY AUTOINCREMENT,
+			`src_name`		TEXT NOT NULL,
 			`book_name`		TEXT NOT NULL,
 			`chapter_nr`	INTEGER NOT NULL,
 			`verse_nr`		INTEGER NOT NULL,
@@ -99,7 +100,7 @@ def parse_file(filename):
 			word = get_unicode_word(line[0:25].strip())
 			root_word = get_unicode_word(re.sub(r'\s+', ' ', line[36:]))
 			morphology = re.sub(r'\s+', ' ', line[25:36].strip())
-			valuesToInsert.append("(\'" + str(count) + "\', \'" + book_name + "\', \'" + str(chapter_nr) + "\', \'" + str(verse_nr) + "\', \'" +  str(word_nr) + "\', \'" + word + "\', \'" + root_word + "\', \'" + morphology + "\')")
+			valuesToInsert.append("(\'" + str(count) + "\', \'" + filename + "\', \'" + book_name + "\', \'" + str(chapter_nr) + "\', \'" + str(verse_nr) + "\', \'" +  str(word_nr) + "\', \'" + word + "\', \'" + root_word + "\', \'" + morphology + "\')")
 			chunkCounter += 1
 
 		if (chunkCounter == 500):
